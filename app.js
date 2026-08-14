@@ -134,9 +134,9 @@ function drawSeedBadge(canvas, item, size, seedImg) {
   layer(overSlot, 1, fg, [60, 80, 40]);
 }
 
-async function drawItemInto(canvas, item, version) {
+async function drawItemInto(canvas, item, version, smooth = false) {
   const ctx = canvas.getContext("2d");
-  ctx.imageSmoothingEnabled = false;
+  ctx.imageSmoothingEnabled = smooth; // smooth upscale utk mode raw besar
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
   try {
@@ -298,16 +298,25 @@ function renderRaw() {
 
   const wrap = document.createElement("div");
   wrap.style.cssText = "display:flex;align-items:center;justify-content:center;min-height:100vh;";
-  const size = parseInt(q.get("size"), 10) || 96;
+  // Default 1024x1024 (supersample dari sprite 32px). Bisa dioverride &size=.
+  const size = parseInt(q.get("size"), 10) || 1024;
   const cv = document.createElement("canvas");
   cv.width = size; cv.height = size;
-  cv.style.cssText = "image-rendering:pixelated;width:" + size + "px;height:" + size + "px;background:repeating-conic-gradient(#2a3444 0 25%,#1e2736 0 50%) 0 0/16px 16px;";
+  cv.style.cssText = "image-rendering:pixelated;width:" + size + "px;height:" + size + "px;background:repeating-conic-gradient(#2a3444 0 25%,#1e2736 0 50%) 0 0/" + (size / 64) + "px " + (size / 64) + "px;";
   wrap.appendChild(cv);
   document.body.appendChild(wrap);
 
-  drawItemInto(cv, item, version).catch(() => {
+  // Render ikon di canvas 32x32 dulu, lalu upscale mulus ke ukuran target.
+  const small = document.createElement("canvas");
+  small.width = 32; small.height = 32;
+  drawItemInto(small, item, version).catch(() => {
+    const sctx = small.getContext("2d");
+    sctx.fillStyle = "#666"; sctx.fillRect(0, 0, 32, 32);
+  }).then(() => {
     const ctx = cv.getContext("2d");
-    ctx.fillStyle = "#666"; ctx.fillRect(0, 0, size, size);
+    ctx.imageSmoothingEnabled = true;
+    ctx.imageSmoothingQuality = "high";
+    ctx.drawImage(small, 0, 0, 32, 32, 0, 0, size, size);
   });
 }
 
