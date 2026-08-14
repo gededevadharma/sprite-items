@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Sprite Items Icon</title>
+  <style>
+    :root { color-scheme: dark; }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, sans-serif;
+      background: #0f1520;
+      color: #e2e8f0;
+      min-height: 100vh;
+    }
+    header {
+      position: sticky; top: 0;
+      background: #111a2b;
+      border-bottom: 1px solid #223049;
+      padding: 10px 16px;
+      display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+      z-index: 10;
+    }
+    header h1 { font-size: 18px; margin: 0; margin-right: auto; color: #f5c518; }
+    header input {
+      background: #1c2740; border: 1px solid #2c3b5c; color: #fff;
+      padding: 7px 10px; border-radius: 6px; min-width: 220px;
+    }
+    header select {
+      background: #1c2740; border: 1px solid #2c3b5c; color: #fff;
+      padding: 7px 8px; border-radius: 6px;
+    }
+    header button {
+      background: #f5c518; color: #111; font-weight: 600;
+      border: 0; padding: 7px 14px; border-radius: 6px; cursor: pointer;
+    }
+    header button:disabled { opacity: .5; cursor: wait; }
+    #status { font-size: 13px; color: #94a3b8; width: 100%; }
+    #grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(84px, 1fr));
+      gap: 10px; padding: 16px;
+    }
+    .cell {
+      background: #16202f; border: 1px solid #223049; border-radius: 8px;
+      padding: 8px; text-align: center; cursor: pointer;
+      transition: border-color .15s;
+    }
+    .cell:hover { border-color: #f5c518; }
+    .cell canvas { image-rendering: pixelated; width: 48px; height: 48px; }
+    .cell .nm { font-size: 11px; color: #cbd5e1; margin-top: 4px;
+      overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .cell .id { font-size: 10px; color: #64748b; }
+    dialog {
+      background: #16202f; color: #e2e8f0; border: 1px solid #2c3b5c;
+      border-radius: 10px; padding: 18px; max-width: 420px; width: 90%;
+    }
+    dialog::backdrop { background: rgba(0,0,0,.55); }
+    dialog img, dialog canvas { image-rendering: pixelated; width: 64px; height: 64px; }
+    dialog .row { display: flex; gap: 14px; align-items: center; margin-bottom: 12px; }
+    #bigInfo { font-size: 12px; line-height: 1.7; word-break: break-all; }
+    .code { font-family: monospace; background: #1c2740; padding: 2px 6px; border-radius: 4px; font-size: 11px; }
+    a { color: #f5c518; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>🧩 Sprite Items Icon</h1>
+    <input id="search" placeholder="Cari nama / ID item..." />
+    <select id="verSelect" title="Versi data"></select>
+    <button id="btnLoad" disabled>Muat item...</button>
+    <div id="status">Memuat daftar item...</div>
+  </header>
+
+  <div id="grid"></div>
+
+  <dialog id="dlg">
+    <div class="row">
+      <canvas id="bigCanvas" width="64" height="64"></canvas>
+      <div>
+        <strong id="dlgName"></strong><br />
+        <span class="code" id="dlgId"></span>
+      </div>
+    </div>
+    <div id="bigInfo"></div>
+    <div style="margin-top:12px; display:flex; gap:8px; flex-wrap:wrap;">
+      <button id="btnDl">⬇ Download PNG</button>
+      <button id="btnCopy">🔗 Salin URL ?id=</button>
+      <button onclick="dlg.close()">Tutup</button>
+    </div>
+  </dialog>
+
+  <script src="app.js"></script>
+</body>
+</html>

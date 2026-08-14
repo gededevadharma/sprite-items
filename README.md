@@ -1,76 +1,71 @@
-# Growtools Item Icon API
+# 🧩 Sprite Items Icon
 
-Cloudflare Worker yang mengembalikan ikon item Growtopia (PNG) langsung dari repo
-[`kabuokis/growtopia-data`](https://github.com/kabuokis/growtopia-data).
+Situs statis (GitHub Pages) untuk menjelajah & mengunduh **ikon item Growtopia**.
+Data & texture diambil langsung dari repo
+[`kabuokis/growtopia-data`](https://github.com/kabuokis/growtopia-data)
+di sisi browser — tanpa server, tanpa runtime khusus.
 
-## Endpoint
+## Fitur
+- Pencarian item berdasarkan **nama** atau **ID**
+- Pilih **versi data** (5.45., 5.42, 2.78, …)
+- Ikon di-crop dari sprite sheet (32×32) langsung di canvas browser
+- Seed item dirender dengan warna tint (mirip app Growtools)
+- Klik item → detail + **download PNG** + **salin deep link** `?id=..&v=..`
+- Deep link bisa langsung membuka item tertentu
 
-| URL | Deskripsi |
-| --- | --- |
-| `/icon?id=2` | Ikon item (contoh: `2` = Dirt) pada versi terbaru |
-| `/icon?id=2&v=5.40` | Ikon item pada versi data tertentu |
-| `/icon?file=seed.png&x=384&y=672` | Crop manual 32×32 dari sebuah texture |
+## Deploy ke GitHub Pages
 
-Contoh:
+Repo ini adalah folder yang siap di-upload ke GitHub Pages:
 
-```
-https://growtools-icon-api.<your-subdomain>.workers.dev/icon?id=2
-```
+### 1. Buat repo di GitHub
+Buka <https://github.com/new>
+- **Repository name:** `item-sprite`
+- Set **Public**
+- Kosong (tanpa README/gitignore/license)
 
-## Cara deploy ke Cloudflare Workers
-
-### 1. Bikin akun (kalau belum)
-Daftar di <https://dash.cloudflare.com/sign-up>.
-
-### 2. Install wrangler & login
-
+### 2. Push dari folder ini
 ```bash
-cd icon-api
-npm install
-npx wrangler login
+git init -b main
+git add -A
+git commit -m "Sprite Items Icon - GitHub Pages"
+git remote add origin https://github.com/<USERNAME>/item-sprite.git
+git push -u origin main
 ```
 
-### 3. Deploy
+### 3. Aktifkan GitHub Pages
+Di repo → **Settings → Pages**:
+- **Source:** `Deploy from a branch`
+- **Branch:** `main` / `/ (root)`
+- Save
 
-```bash
-npm run deploy
+Situs langsung tampil di:
+```
+https://<USERNAME>.github.io/item-sprite/
 ```
 
-Setelah selesai, CLI menampilkan URL worker-nya (bentuknya
-`https://growtools-icon-api.<subdomain>.workers.dev`).
+> URL folder repo mengikuti nama GitHub repo (bisa berbeda dari folder lokal).
+> `404.html` dipakai supaya jalur seperti `?id=2` tetap diarahkan ke beranda.
 
-## Cara test lokal
-
-```bash
-npm install
-npm test            # validasi worker.js + test parser
-npm run dev         # jalanin worker di http://localhost:8787
+## Pakai dari aplikasi lain
+Situs adalah halaman interaktif, bukan API JSON. Untuk mendapatkan gambar ikon oleh
+item ID dari luar aplikasi, buka halaman dengan deep link:
 ```
-
-Lalu buka:
-
-- <http://localhost:8787/icon?id=2> → PNG Dirt
-- <http://localhost:8787/icon?file=seed.png&x=384&y=672> → crop manual
-
-## Cara pakai dari frontend
-
-```html
-<img src="https://growtools-icon-api.<subdomain>.workers.dev/icon?id=2" alt="Dirt" />
+https://<USERNAME>.github.io/item-sprite/?id=2
 ```
+Browser menampilkan item tsb; untuk mengunduh PNG-nya gunakan tombol download di dialog.
 
 ## Struktur
-
 ```
-icon-api/
-  src/worker.js    ← logic Worker (parse items.dat + crop texture)
-  test/            ← unit test (node:test, tanpa dependency)
-  wrangler.toml    ← config Worker
-  package.json
+item-sprite/
+  index.html   ← UI utama
+  app.js       ← logic (fetch data, crop canvas, render)
+  404.html     ← fallback SPA
+  README.md
 ```
 
-## Catatan
-
-- Data & texture diambil dari `raw.githubusercontent.com/kabuokis/growtopia-data/main/<version>/`.
-- Parse `items.dat` meniru `src/lib/datParser.ts` di repo Growtools (format binary versi 0–26).
-- Icon seed dirender ulang (tint warna) seperti `drawSeedBadge()` di app, karena seed tidak punya
-  texture sendiri.
+## Catatan teknis
+- Sumber data: `raw.githubusercontent.com/kabuokis/growtopia-data/main/<ver>/decoded/items.dat.txt`
+  (text, kolom pipa) — robust & CORS `*` tersedia.
+- Texture: `.../<ver>/decoded/textures/<nama>.png` (sprite sheet), kolom `tex_x`/`tex_y`,
+  dengan offset `spread_type` untuk posisi ikon.
+- Ikon seed dirender dari `seed.png` + warna `bg_col`/`fg_col`.
