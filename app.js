@@ -275,10 +275,44 @@ async function init() {
 
 // If the page was opened with ?id=..., open that item once loaded.
 function handleDeepLink() {
-  const id = new URLSearchParams(location.search).get("id");
+  const q = new URLSearchParams(location.search);
+  const id = q.get("id");
   if (!id) return;
   const item = items.find((it) => it.id === parseInt(id, 10));
   if (item) showModal(item);
 }
 
-init().then(handleDeepLink);
+// "Gambar saja": `?id=7188&raw=1` -> halaman berisi hanya ikon item besar,
+// cocok dipakai sebagai URL `<img>` / embed. Menghilangkan header + grid.
+function renderRaw() {
+  const q = new URLSearchParams(location.search);
+  const id = parseInt(q.get("id"), 10);
+  if (!isFinite(id)) return;
+  const item = items.find((it) => it.id === id);
+  if (!item) { $("#status").textContent = `Item ${id} tidak ditemukan`; return; }
+
+  document.querySelector("header").style.display = "none";
+  $("#grid").style.display = "none";
+  document.body.style.margin = "0";
+  document.body.style.background = "transparent";
+
+  const wrap = document.createElement("div");
+  wrap.style.cssText = "display:flex;align-items:center;justify-content:center;min-height:100vh;";
+  const size = parseInt(q.get("size"), 10) || 96;
+  const cv = document.createElement("canvas");
+  cv.width = size; cv.height = size;
+  cv.style.cssText = "image-rendering:pixelated;width:" + size + "px;height:" + size + "px;background:repeating-conic-gradient(#2a3444 0 25%,#1e2736 0 50%) 0 0/16px 16px;";
+  wrap.appendChild(cv);
+  document.body.appendChild(wrap);
+
+  drawItemInto(cv, item, version).catch(() => {
+    const ctx = cv.getContext("2d");
+    ctx.fillStyle = "#666"; ctx.fillRect(0, 0, size, size);
+  });
+}
+
+init().then(() => {
+  const q = new URLSearchParams(location.search);
+  if (q.get("raw") === "1") renderRaw();
+  else handleDeepLink();
+});
