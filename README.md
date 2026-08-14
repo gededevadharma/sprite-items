@@ -1,4 +1,4 @@
-# 🧩 Sprite Items Icon
+# sprite-items
 
 Situs statis (GitHub Pages) untuk menjelajah & mengunduh **ikon item Growtopia**.
 Data & texture diambil langsung dari repo
