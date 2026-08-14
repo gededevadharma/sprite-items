@@ -1,0 +1,6 @@
+name = "growtools-icon-api"
+main = "src/worker.js"
+compatibility_date = "2025-08-01"
+
+[vars]
+DEFAULT_VERSION = "5.45."
