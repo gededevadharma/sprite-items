@@ -1,11 +1,14 @@
 # sprite-items
 
-Situs statis (GitHub Pages) untuk menjelajah & mengunduh **ikon item Growtopia**.
+Situs statis untuk menjelajah & mengunduh **ikon item Growtopia**.
 Data & texture diambil langsung dari repo
 [`kabuokis/growtopia-data`](https://github.com/kabuokis/growtopia-data)
 di sisi browser — tanpa server, tanpa runtime khusus.
 
+**Demo:** https://gededevadharma.github.io/sprite-items/
+
 ## Fitur
+
 - Pencarian item berdasarkan **nama** atau **ID**
 - Pilih **versi data** (5.45., 5.42, 2.78, …)
 - Ikon di-crop dari sprite sheet (32×32) langsung di canvas browser
@@ -13,57 +16,79 @@ di sisi browser — tanpa server, tanpa runtime khusus.
 - Klik item → detail + **download PNG** + **salin deep link** `?id=..&v=..`
 - Deep link bisa langsung membuka item tertentu
 
-## Deploy ke GitHub Pages
+## Cara Pakai
 
-Repo ini adalah folder yang siap di-upload ke GitHub Pages:
+1. Buka demo di atas.
+2. Cari item lewat kolom pencarian (nama atau ID), atau pilih versi
+   data yang diinginkan.
+3. Klik sebuah item untuk melihat detailnya.
+4. Unduh ikonnya sebagai PNG, atau salin deep link-nya untuk dibagikan.
+5. Deep link juga bisa dibuka langsung, contoh:
 
-### 1. Buat repo di GitHub
-Buka <https://github.com/new>
-- **Repository name:** `item-sprite`
-- Set **Public**
-- Kosong (tanpa README/gitignore/license)
-
-### 2. Push dari folder ini
-```bash
-git init -b main
-git add -A
-git commit -m "Sprite Items Icon - GitHub Pages"
-git remote add origin https://github.com/<USERNAME>/item-sprite.git
-git push -u origin main
+```
+https://gededevadharma.github.io/sprite-items/?id=2
 ```
 
-### 3. Aktifkan GitHub Pages
-Di repo → **Settings → Pages**:
+Browser akan menampilkan item tersebut; untuk mengunduh PNG-nya gunakan
+tombol download di dialog.
+
+## Jalanin Lokal
+
+Situs ini statis, jadi cukup buka `index.html` di browser. Alternatifnya,
+jalankan server statis apa pun dari folder ini, contoh:
+
+```bash
+npx serve .
+```
+
+## Generate Ikon Massal
+
+Untuk generate ikon lewat Node (lihat `generate-icons.js`):
+
+```bash
+npm install
+npm run generate
+```
+
+## Deploy ke GitHub Pages
+
+Repo ini sudah live di GitHub Pages. Kalau perlu mengaktifkan ulang dari
+nol, di repo → **Settings → Pages**:
+
 - **Source:** `Deploy from a branch`
 - **Branch:** `main` / `/ (root)`
 - Save
 
-Situs langsung tampil di:
+Situs tampil di:
+
 ```
-https://<USERNAME>.github.io/item-sprite/
+https://gededevadharma.github.io/sprite-items/
 ```
 
-> URL folder repo mengikuti nama GitHub repo (bisa berbeda dari folder lokal).
-> `404.html` dipakai supaya jalur seperti `?id=2` tetap diarahkan ke beranda.
+> `404.html` dipakai supaya jalur seperti `?id=2` tetap diarahkan ke
+> beranda.
 
-## Pakai dari aplikasi lain
-Situs adalah halaman interaktif, bukan API JSON. Untuk mendapatkan gambar ikon oleh
-item ID dari luar aplikasi, buka halaman dengan deep link:
-```
-https://<USERNAME>.github.io/item-sprite/?id=2
-```
-Browser menampilkan item tsb; untuk mengunduh PNG-nya gunakan tombol download di dialog.
+## Pakai dari Aplikasi Lain
+
+Situs adalah halaman interaktif, bukan API JSON. Untuk mendapatkan gambar
+ikon oleh item ID dari luar aplikasi, buka halaman dengan deep link
+(contoh di atas). Browser menampilkan item tersebut; untuk mengunduh
+PNG-nya gunakan tombol download di dialog.
 
 ## Struktur
+
 ```
-item-sprite/
-  index.html   ← UI utama
-  app.js       ← logic (fetch data, crop canvas, render)
-  404.html     ← fallback SPA
+sprite-items/
+  index.html        ← UI utama
+  app.js            ← logic (fetch data, crop canvas, render)
+  generate-icons.js ← generate ikon massal lewat Node
+  404.html          ← fallback SPA
+  icons/            ← hasil generate ikon
   README.md
 ```
 
-## Catatan teknis
+## Catatan Teknis
+
 - Sumber data: `raw.githubusercontent.com/kabuokis/growtopia-data/main/<ver>/decoded/items.dat.txt`
   (text, kolom pipa) — robust & CORS `*` tersedia.
 - Texture: `.../<ver>/decoded/textures/<nama>.png` (sprite sheet), kolom `tex_x`/`tex_y`,
