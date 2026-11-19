@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-11-19T13:10:00+08:00",
+  "updated_at": "2026-11-19T13:18:00+08:00",
   "title": "Status Pekerjaan — GrowBest",
   "tasks": [
     {"id": "dialog-search", "title": "Search dialog jadi satu search bar", "status": "done", "detail": "live 12:39"},
@@ -8,7 +8,9 @@
     {"id": "gems-fix", "title": "Fix gems, bendera, matikan angka UID", "status": "done", "detail": "live 09:52"},
     {"id": "login-page", "title": "Halaman login — preview Discord + tambah isi", "status": "done", "detail": "live 13:08"},
     {"id": "sell-market", "title": "Market sell terpadu — ganti sellfish + sellcrystal", "status": "running", "detail": ""},
-    {"id": "event-toggle", "title": "Toggle Event Buttons", "status": "running", "detail": "koordinator jalan"}
+    {"id": "event-toggle", "title": "Toggle Event Buttons", "status": "running", "detail": "koordinator jalan"},
+    {"id": "audit-fase3", "title": "Audit ulang fase 3 — cari regresi", "status": "running", "detail": "koordinator jalan"},
+    {"id": "agent-backend", "title": "Cek backend /agent Zen + re-test", "status": "running", "detail": "koordinator jalan"}
   ],
   "note": "Warna CODER dan warna chat Level 999 dibiarkan."
 }
