@@ -1,0 +1,14 @@
+{
+  "updated_at": "2026-11-19T13:05:00+08:00",
+  "title": "Status Pekerjaan — GrowBest",
+  "tasks": [
+    {"id": "dialog-search", "title": "Search dialog jadi satu search bar", "status": "done", "detail": "live 12:39"},
+    {"id": "weather-password", "title": "Weather dropdown + lihat password", "status": "done", "detail": "live 11:35"},
+    {"id": "lua-round", "title": "Ronde Lua tile-splice + S6 sellfish", "status": "done", "detail": "live 11:59"},
+    {"id": "gems-fix", "title": "Fix gems, bendera, matikan angka UID", "status": "done", "detail": "live 09:52"},
+    {"id": "login-page", "title": "Halaman login — preview Discord + tambah isi", "status": "running", "detail": ""},
+    {"id": "sell-market", "title": "Market sell terpadu — ganti sellfish + sellcrystal", "status": "running", "detail": ""},
+    {"id": "event-toggle", "title": "Toggle Event Buttons", "status": "waiting", "detail": "setelah ronde login selesai"}
+  ],
+  "note": "Warna CODER dan warna chat Level 999 dibiarkan."
+}
